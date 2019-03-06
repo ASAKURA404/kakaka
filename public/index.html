@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+
+
+<head>
+
+    <meta charset="utf-8">
+    <title>今期何見る？　-あなたにぴったりのアニメが見つかるサイト</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- https://qiita.com/cnloni/items/5de03096a73c702b97ed -->
+
+</head>
+
+
+<body>
+
+    <header>
+        <div class="header">
+            <div class="item sitename">
+                <h1><a href="index.html"><img src="title.svg" alt="今期何みる？"></a></h1>
+                <p>あなたにぴったりのアニメが見つかるサイト</p>
+            </div>
+
+            <div class="item tweet">
+                <p>何見るかつぶやく</p><input type="submit" name="tweet" value="🐤">
+                <div class="verticalads">
+                    <p class="ads">ads</p>
+                </div>
+            </div>
+
+
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 左カラム -->
+        <div class="item left">
+            <div class="arrangement">
+                <from method="post">
+                    <input type="search" name="search" placeholder="キーワードを入力"><br>
+                    <input type="submit" name="submit" value="検索"><br><br>
+                </from>
+
+                <from method="post">
+                    <div class="radio">
+                        <input type="radio" name="整列" value="おすすめ">おすすめ<br>
+                        <input type="radio" name="整列" value="ランキング" checked>ランキング<br>
+                        <input type="radio" name="整列" value="ジャンル">ジャンル<br>
+                        <input type="radio" name="整列" value="スター">スター
+                        <p>～で<input type="submit" value="並べる"></p>
+                    </div>
+                </from>
+            </div>
+
+            <div class="squareads">
+                <p class="ads">ads</p>
+            </div>
+
+            <div class="explanation">
+                <p>「今期何見る？」はユーザーの口コミを元に公正に作られた情報を提供します。</p>
+            </div>
+
+            <div class="about">
+                <p>本サイトについて</p>
+                <p>寄付</p>
+                <p>リンク</p>
+            </div>
+
+        </div>
+
+
+        <!-- メインカラム -->
+        <div class="item main">
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>👑ランキング</th>
+                        <th>総合得点</th>
+                        <th>ジャンル</th>
+                        <th>ストーリー</th>
+                        <th>レビュー</th>
+                        <th>マッチング</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <div>
+                        <tr>
+                            <td colspan="6">
+                                <h2 id=title></h2>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><img src="wataten.png"><br>
+                                <a>公式HP</a><br>
+                                <input type="submit" name="pv" value="PV">
+                                <input type="submit" name="原作" value="@">
+                                <input type="submit" name="danime" value="d">
+                                <input type="submit" name="niconico" value="N">
+                                <input type="submit" name="google" value="G"><br>
+                                <p>1/10(火) 25:00~</p>
+                            </td>
+                            <td class="point" id="point"><br>
+                                <p>★★★★☆</p>
+                            </td>
+                            <td>chart<br>
+                                <p id="category"></p>
+                            </td>
+                            <td>
+                                <pre>・JD星野都がJS花子に一目惚れ
+・星野都が妹ひなたの友達と過ごす
+・ひなたは</pre>
+                            </td>
+                            <td>
+                                <p>男女★★★★☆</p>
+                                <p>幸せ-☆----------シリアス</p>
+                                <p>easy--☆----------知的</p>
+                            </td>
+                            <td>twitter画面<br><input type="submit" name="tweet" value="🐤"></td>
+                        </tr>
+                    </div>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <table>
+        <tbody id='csv-body' />
+    </table>
+
+    <!-- <div class="container">
+                                <div class="item"><img src="wataten.png"></div>
+                                なぜ下に余白が入るのだろう⇒しばらく考えてもわからない
+                                <div class="item">
+                                    <p class="point">98</p>
+                                </div>
+                                文字は<p>で囲んだ上でarticleやdivに包む（自作のタグで包まない）
+                    </div>
+                    -->
+
+    <footer><small>Copyright &copy; Inspiration, all rights reserved.</small></footer>
+
+
+
+    <!--    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+    <script type="text/javascript" src="jquery.csv.js"></script>
+    <script type="text/javascript" src="database.csv"></script> -->
+
+    <script>
+        //CSVファイルを読み込む関数getCSV()の定義
+        function getCSV() {
+            var req = new XMLHttpRequest(); // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
+            req.open("get", "database.csv", true); // アクセスするファイルを指定
+            req.send(null); // HTTPリクエストの発行
+
+            // レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ	
+            req.onload = function() {
+                convertCSVtoArray(req.responseText); // 渡されるのは読み込んだCSVデータ
+            }
+        }
+
+        // 読み込んだCSVデータを二次元配列に変換する関数convertCSVtoArray()の定義
+        function convertCSVtoArray(str) { // 読み込んだCSVデータが文字列として渡される
+            var result = []; // 最終的な二次元配列を入れるための配列
+            var tmp = str.split("\n"); // 改行を区切り文字として行を要素とした配列を生成
+
+            // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
+            for (var i = 0; i < tmp.length; ++i) {
+                result[i] = tmp[i].split(',');
+            }
+        document.getElementById('title').textContent = result[1][0];
+        }
+
+        getCSV(); //最初に実行される
+
+    </script>
+
+    <script>
+        var jsbook = {
+            title: '私に天使が舞い降りた',
+            point: 98,
+            category: '日常'
+        }
+    
+
+        document.getElementById('point').textContent = jsbook.point;
+        document.getElementById('category').textContent = jsbook.category;
+
+    </script>
+
+
+</body>
+
+
+
+</html>
